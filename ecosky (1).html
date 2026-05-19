@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoSky — Pengolahan Sampah di Sekolah</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #1a5c2e;
+    --green-mid: #2d8f4e;
+    --green-light: #4caf70;
+    --green-pale: #e8f7ee;
+    --amber: #f59e0b;
+    --amber-pale: #fef3c7;
+    --blue: #3b82f6;
+    --blue-pale: #eff6ff;
+    --red: #ef4444;
+    --red-pale: #fef2f2;
+    --earth: #92400e;
+    --cream: #fefdf8;
+    --text: #1c2b1e;
+    --text-muted: #5a7060;
+    --border: #c8e6d0;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--green-dark);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .nav-logo {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-logo span { font-size: 1.6rem; }
+  .nav-links { display: flex; gap: 0.5rem; }
+  .nav-links a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, #3aaa68 100%);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #a8ffca;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 1.2rem;
+    position: relative;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: #a8ffca;
+  }
+  .hero p {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.85);
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    position: relative;
+  }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+  .btn-primary {
+    background: #fff;
+    color: var(--green-dark);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .btn-outline {
+    background: transparent;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: 2px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+  .hero-icons {
+    position: relative;
+    margin-top: 3.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    backdrop-filter: blur(4px);
+  }
+  .hero-stat .num { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; color: #a8ffca; }
+  .hero-stat .lbl { font-size: 0.8rem; color: rgba(255,255,255,0.75); font-weight: 600; margin-top: 2px; }
+
+  /* SECTIONS */
+  section { padding: 4rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-pale);
+    color: var(--green-mid);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--green-dark);
+    margin-bottom: 0.6rem;
+  }
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    max-width: 540px;
+    line-height: 1.6;
+  }
+
+  /* WASTE TYPES */
+  .waste-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .waste-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .waste-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(44,142,78,0.15); border-color: var(--green-light); }
+  .waste-card.active { border-color: var(--green-mid); box-shadow: 0 0 0 4px rgba(44,142,78,0.1); }
+  .waste-emoji { font-size: 2.8rem; margin-bottom: 0.7rem; display: block; }
+  .waste-name { font-weight: 800; font-size: 1rem; color: var(--text); margin-bottom: 4px; }
+  .waste-type { font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; display: inline-block; }
+  .type-organik { background: var(--green-pale); color: var(--green-dark); }
+  .type-anorganik { background: var(--blue-pale); color: #1e40af; }
+  .type-b3 { background: var(--red-pale); color: #991b1b; }
+
+  .waste-detail {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: none;
+    animation: fadeSlide 0.3s ease;
+  }
+  .waste-detail.show { display: block; }
+  @keyframes fadeSlide { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  .detail-title { font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 800; color: var(--green-dark); margin-bottom: 1rem; }
+  .step-list { list-style: none; }
+  .step-list li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num {
+    background: var(--green-mid);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 0.95rem; line-height: 1.6; color: var(--text); padding-top: 3px; }
+
+  /* TUTORIAL TABS */
+  .tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tab-btn {
+    background: #fff;
+    border: 2px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active, .tab-btn:hover { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeSlide 0.3s ease; }
+
+  .tutorial-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 340px;
+  }
+  @media (max-width: 640px) { .tutorial-card { grid-template-columns: 1fr; } }
+  .tutorial-visual {
+    background: var(--green-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7rem;
+    padding: 2rem;
+  }
+  .tutorial-body { padding: 2rem; }
+  .tutorial-body h3 { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.3rem; color: var(--green-dark); margin-bottom: 0.5rem; }
+  .tutorial-body p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.6; }
+  .material-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.2rem; }
+  .tag {
+    background: var(--amber-pale);
+    color: #92400e;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .mini-steps { list-style: none; }
+  .mini-steps li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    padding: 4px 0;
+    color: var(--text);
+  }
+  .mini-steps li::before {
+    content: '✓';
+    color: var(--green-mid);
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  /* MINIGAME */
+  #game-section {
+    background: var(--green-pale);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    margin: 0 1rem;
+  }
+  .game-header { text-align: center; margin-bottom: 2rem; }
+  .game-score-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .score-box {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1.5rem;
+    text-align: center;
+    min-width: 100px;
+  }
+  .score-box .val { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; color: var(--green-dark); }
+  .score-box .lbl { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .game-arena {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .trash-display {
+    font-size: 5rem;
+    margin-bottom: 0.5rem;
+    animation: bounce 0.4s ease;
+  }
+  @keyframes bounce { 0%{transform:scale(0.5);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
+  .trash-question { font-weight: 800; font-size: 1.1rem; color: var(--text); margin-bottom: 1.5rem; }
+  .game-bins {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .bin-btn {
+    background: #fff;
+    border: 3px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 0.5rem;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .bin-btn:hover { transform: translateY(-3px); }
+  .bin-btn.bin-organik { border-color: #86efac; color: var(--green-dark); }
+  .bin-btn.bin-organik:hover { background: var(--green-pale); }
+  .bin-btn.bin-anorganik { border-color: #93c5fd; color: #1d4ed8; }
+  .bin-btn.bin-anorganik:hover { background: var(--blue-pale); }
+  .bin-btn.bin-b3 { border-color: #a8ffca; color: #b91c1c; }
+  .bin-btn.bin-b3:hover { background: var(--red-pale); }
+  .bin-btn .bin-emoji { font-size: 2.2rem; }
+  .feedback-msg {
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 1rem;
+    min-height: 44px;
+    transition: all 0.3s;
+  }
+  .feedback-msg.correct { background: var(--green-pale); color: var(--green-dark); }
+  .feedback-msg.wrong { background: var(--red-pale); color: #991b1b; }
+  .game-result {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+  }
+  .result-emoji { font-size: 4rem; margin-bottom: 0.5rem; }
+  .result-title { font-family: 'Baloo 2', cursive; font-size: 1.8rem; font-weight: 800; color: var(--green-dark); margin-bottom: 0.5rem; }
+  .result-sub { color: var(--text-muted); margin-bottom: 1.5rem; }
+  .btn-restart {
+    background: var(--green-mid);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-restart:hover { background: var(--green-dark); transform: translateY(-2px); }
+
+  /* ARTICLES */
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .article-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .article-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,142,78,0.12); border-color: var(--green-light); }
+  .article-thumb {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+  }
+  .thumb-green { background: var(--green-pale); }
+  .thumb-amber { background: var(--amber-pale); }
+  .thumb-blue { background: var(--blue-pale); }
+  .thumb-red { background: var(--red-pale); }
+  .article-body { padding: 1.2rem; }
+  .article-cat {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--green-mid);
+    margin-bottom: 0.5rem;
+  }
+  .article-title { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 1.05rem; color: var(--text); margin-bottom: 0.5rem; line-height: 1.3; }
+  .article-excerpt { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.8rem; }
+  .article-meta { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--text-muted); }
+  .read-time { background: var(--green-pale); color: var(--green-dark); padding: 2px 8px; border-radius: 20px; font-weight: 700; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: #fff;
+    border-radius: 20px;
+    max-width: 620px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.25s;
+  }
+  .modal-overlay.open .modal { transform: none; }
+  .modal-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+  }
+  .modal-close {
+    background: var(--green-pale);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    color: var(--green-dark);
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { background: var(--green-mid); color: #fff; }
+  .modal-body { padding: 1.5rem; }
+  .modal-body h2 { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.4rem; color: var(--green-dark); }
+  .modal-body .modal-cat { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green-mid); margin: 4px 0 1rem; }
+  .modal-body p { font-size: 0.95rem; line-height: 1.75; color: var(--text); margin-bottom: 1rem; }
+  .modal-body h4 { font-weight: 800; color: var(--green-dark); margin: 1.2rem 0 0.5rem; }
+  .modal-body ul { padding-left: 1.2rem; }
+  .modal-body ul li { font-size: 0.93rem; color: var(--text); line-height: 1.6; margin-bottom: 0.4rem; }
+  .modal-tip {
+    background: var(--green-pale);
+    border-left: 4px solid var(--green-mid);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: 0.9rem;
+    color: var(--green-dark);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--green-dark);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    padding: 2.5rem 1rem;
+    margin-top: 4rem;
+    font-size: 0.9rem;
+  }
+  footer strong { color: #a8ffca; }
+
+  /* Progress bar game */
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 10px;
+    height: 8px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: var(--green-mid);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  @media (max-width: 500px) {
+    .game-bins { grid-template-columns: 1fr; }
+    .tutorial-visual { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>♻️</span> EcoSky</div>
+  <div class="nav-links">
+    <a href="#jenis">Jenis Sampah</a>
+    <a href="#tutorial">Tutorial</a>
+    <a href="#game">Minigame</a>
+    <a href="#artikel">Artikel</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🌱 Program Sekolah Hijau</div>
+  <h1>Sampah Sekolahmu,<br><em>Tanggung Jawabmu!</em></h1>
+  <p>Belajar cara memilah dan mengolah sampah di sekolah dengan cara yang seru, mudah, dan berdampak nyata bagi lingkungan.</p>
+  <div class="hero-btns">
+    <a href="#tutorial" class="btn-primary">🎓 Mulai Belajar</a>
+    <a href="#game" class="btn-outline">🎮 Main Minigame</a>
+  </div>
+  <div class="hero-icons">
+    <div class="hero-stat"><div class="num">3</div><div class="lbl">Jenis Sampah</div></div>
+    <div class="hero-stat"><div class="num">6+</div><div class="lbl">Tutorial Daur Ulang</div></div>
+    <div class="hero-stat"><div class="num">4</div><div class="lbl">Artikel Edukasi</div></div>
+    <div class="hero-stat"><div class="num">∞</div><div class="lbl">Dampak Positif</div></div>
+  </div>
+</div>
+
+<!-- JENIS SAMPAH -->
+<section id="jenis">
+  <div class="section-tag">♻️ Pengenalan</div>
+  <h2 class="section-title">Kenali Jenis-Jenis Sampah</h2>
+  <p class="section-sub">Klik salah satu kartu di bawah untuk melihat cara pengolahannya yang tepat.</p>
+
+  <div class="waste-grid">
+    <div class="waste-card" onclick="showWaste('organik')">
+      <span class="waste-emoji">🍌</span>
+      <div class="waste-name">Sampah Organik</div>
+      <span class="waste-type type-organik">Mudah Terurai</span>
+    </div>
+    <div class="waste-card" onclick="showWaste('kertas')">
+      <span class="waste-emoji">📄</span>
+      <div class="waste-name">Kertas & Kardus</div>
+      <span class="waste-type type-anorganik">Daur Ulang</span>
+    </div>
+    <div class="waste-card" onclick="showWaste('plastik')">
+      <span class="waste-emoji">🧴</span>
+      <div class="waste-name">Plastik & Botol</div>
+      <span class="waste-type type-anorganik">Daur Ulang</span>
+    </div>
+    <div class="waste-card" onclick="showWaste('elektronik')">
+      <span class="waste-emoji">🔋</span>
+      <div class="waste-name">Baterai & Elektronik</div>
+      <span class="waste-type type-b3">Berbahaya</span>
+    </div>
+    <div class="waste-card" onclick="showWaste('logam')">
+      <span class="waste-emoji">🥫</span>
+      <div class="waste-name">Kaleng & Logam</div>
+      <span class="waste-type type-anorganik">Daur Ulang</span>
+    </div>
+    <div class="waste-card" onclick="showWaste('kaca')">
+      <span class="waste-emoji">🍶</span>
+      <div class="waste-name">Kaca & Botol Kaca</div>
+      <span class="waste-type type-anorganik">Daur Ulang</span>
+    </div>
+  </div>
+
+  <div class="waste-detail" id="waste-detail">
+    <div class="detail-title" id="detail-title"></div>
+    <ul class="step-list" id="detail-steps"></ul>
+  </div>
+</section>
+
+<!-- TUTORIAL -->
+<section id="tutorial">
+  <div class="section-tag">📚 Tutorial</div>
+  <h2 class="section-title">Tutorial Pengolahan Sampah</h2>
+  <p class="section-sub">Ikuti panduan langkah demi langkah untuk mengolah berbagai jenis sampah di sekolah.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('kompos')">🌿 Kompos</button>
+    <button class="tab-btn" onclick="switchTab('daur-ulang')">♻️ Daur Ulang</button>
+    <button class="tab-btn" onclick="switchTab('kerajinan')">🎨 Kerajinan</button>
+    <button class="tab-btn" onclick="switchTab('bank-sampah')">🏦 Bank Sampah</button>
+  </div>
+
+  <div class="tab-content active" id="tab-kompos">
+    <div class="tutorial-card">
+      <div class="tutorial-visual">🌱</div>
+      <div class="tutorial-body">
+        <h3>Membuat Kompos dari Sisa Makanan</h3>
+        <p>Ubah sisa makan siang dan dedaunan kering menjadi pupuk kompos yang berguna untuk taman sekolah.</p>
+        <div class="material-tags">
+          <span class="tag">🥗 Sisa Makanan</span>
+          <span class="tag">🍂 Daun Kering</span>
+          <span class="tag">🪣 Wadah / Ember</span>
+          <span class="tag">💧 Air</span>
+        </div>
+        <ul class="mini-steps">
+          <li>Siapkan ember berlubang sebagai wadah kompos</li>
+          <li>Masukkan sisa makanan (sayur, buah, nasi)</li>
+          <li>Tambahkan lapisan daun kering di atasnya</li>
+          <li>Aduk setiap 2-3 hari agar udara masuk</li>
+          <li>Kompos siap dalam 4-6 minggu</li>
+          <li>Gunakan pupuk untuk tanaman di sekolah</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-daur-ulang">
+    <div class="tutorial-card">
+      <div class="tutorial-visual">♻️</div>
+      <div class="tutorial-body">
+        <h3>Daur Ulang Kertas Bekas Sekolah</h3>
+        <p>Kertas soal, buku usang, dan koran bisa dijadikan kertas daur ulang atau dikirim ke pengepul.</p>
+        <div class="material-tags">
+          <span class="tag">📄 Kertas Bekas</span>
+          <span class="tag">🪣 Baskom</span>
+          <span class="tag">🖼️ Screen/Kasa</span>
+          <span class="tag">💧 Air</span>
+        </div>
+        <ul class="mini-steps">
+          <li>Kumpulkan dan pisahkan kertas dari staples/penjepit</li>
+          <li>Sobek kertas menjadi potongan kecil</li>
+          <li>Rendam dalam air selama 24 jam</li>
+          <li>Blender campuran kertas dan air menjadi bubur</li>
+          <li>Tuang di atas screen, ratakan, lalu keringkan di bawah sinar matahari</li>
+          <li>Kertas baru siap digunakan atau dihias</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-kerajinan">
+    <div class="tutorial-card">
+      <div class="tutorial-visual">🎨</div>
+      <div class="tutorial-body">
+        <h3>Kerajinan dari Botol Plastik Bekas</h3>
+        <p>Botol plastik minuman bisa disulap menjadi pot bunga, celengan, atau dekorasi kelas yang keren!</p>
+        <div class="material-tags">
+          <span class="tag">🧴 Botol Plastik</span>
+          <span class="tag">✂️ Gunting</span>
+          <span class="tag">🎨 Cat/Spidol</span>
+          <span class="tag">🌱 Tanah & Benih</span>
+        </div>
+        <ul class="mini-steps">
+          <li>Cuci bersih botol plastik bekas</li>
+          <li>Potong bagian atas botol sesuai kebutuhan</li>
+          <li>Lubangi bagian bawah sebagai drainase air</li>
+          <li>Cat dan hias botol sesuai kreativitas</li>
+          <li>Isi dengan tanah dan tanam bibit tanaman</li>
+          <li>Pajang di jendela kelas atau kebun sekolah</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-bank-sampah">
+    <div class="tutorial-card">
+      <div class="tutorial-visual">🏦</div>
+      <div class="tutorial-body">
+        <h3>Cara Mendirikan Bank Sampah Sekolah</h3>
+        <p>Bank sampah adalah sistem pengelolaan sampah berbasis tabungan — siswa menukar sampah dengan poin!</p>
+        <div class="material-tags">
+          <span class="tag">📋 Buku Catatan</span>
+          <span class="tag">🏷️ Label/Kategori</span>
+          <span class="tag">🛒 Karung Pengumpul</span>
+          <span class="tag">👥 Panitia Siswa</span>
+        </div>
+        <ul class="mini-steps">
+          <li>Bentuk tim pengelola dari siswa (3-5 orang)</li>
+          <li>Sediakan area penampungan dengan 3 kategori: organik, anorganik, B3</li>
+          <li>Buat buku tabungan poin setiap siswa</li>
+          <li>Tentukan nilai poin untuk tiap jenis sampah</li>
+          <li>Lakukan "hari setor" setiap minggu</li>
+          <li>Sampah anorganik dijual ke pengepul, hasilnya untuk kas kelas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MINIGAME -->
+<div id="game">
+  <section style="padding: 0 0 2rem;">
+    <div id="game-section">
+      <div class="game-header">
+        <div class="section-tag" style="justify-content:center;">🎮 Minigame</div>
+        <h2 class="section-title" style="text-align:center;">Pilah Sampah, Yuk!</h2>
+        <p class="section-sub" style="text-align:center; margin-bottom:0;">Buang sampah ke tempat yang benar. Berapa nilai yang kamu dapat?</p>
+      </div>
+      <div class="game-score-bar">
+        <div class="score-box">
+          <div class="val" id="score-val">0</div>
+          <div class="lbl">⭐ Skor</div>
+        </div>
+        <div class="score-box">
+          <div class="val" id="q-val">1</div>
+          <div class="lbl">📋 Soal</div>
+        </div>
+        <div class="score-box">
+          <div class="val" id="streak-val">0</div>
+          <div class="lbl">🔥 Streak</div>
+        </div>
+      </div>
+
+      <div class="game-arena" id="game-arena">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <div class="trash-display" id="trash-emoji">🍌</div>
+        <div class="trash-question" id="trash-name">Kulit Pisang</div>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.2rem;">Buang ke tempat sampah yang mana?</p>
+        <div class="game-bins">
+          <button class="bin-btn bin-organik" onclick="checkAnswer('organik')">
+            <span class="bin-emoji">🟢</span>
+            <span>Organik</span>
+            <span style="font-size:0.75rem;font-weight:600;opacity:0.7">Daun & Makanan</span>
+          </button>
+          <button class="bin-btn bin-anorganik" onclick="checkAnswer('anorganik')">
+            <span class="bin-emoji">🔵</span>
+            <span>Anorganik</span>
+            <span style="font-size:0.75rem;font-weight:600;opacity:0.7">Plastik & Kertas</span>
+          </button>
+          <button class="bin-btn bin-b3" onclick="checkAnswer('b3')">
+            <span class="bin-emoji">🔴</span>
+            <span>B3</span>
+            <span style="font-size:0.75rem;font-weight:600;opacity:0.7">Berbahaya</span>
+          </button>
+        </div>
+        <div class="feedback-msg" id="feedback"></div>
+      </div>
+
+      <div class="game-result" id="game-result">
+        <div class="result-emoji" id="result-emoji">🎉</div>
+        <div class="result-title" id="result-title">Luar Biasa!</div>
+        <div class="result-sub" id="result-sub">Kamu mendapat 80 poin dari 10 soal</div>
+        <button class="btn-restart" onclick="restartGame()">🔄 Main Lagi</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ARTIKEL -->
+<section id="artikel">
+  <div class="section-tag">📰 Artikel</div>
+  <h2 class="section-title">Artikel Pengolahan Sampah</h2>
+  <p class="section-sub">Perluas pengetahuanmu dengan membaca artikel-artikel informatif tentang pengelolaan sampah.</p>
+
+  <div class="article-grid">
+    <div class="article-card" onclick="openArticle('zero-waste')">
+      <div class="article-thumb thumb-green">🌿</div>
+      <div class="article-body">
+        <div class="article-cat">Gaya Hidup</div>
+        <div class="article-title">Zero Waste di Sekolah: Mungkinkah?</div>
+        <div class="article-excerpt">Program zero waste sekolah terbukti bisa mengurangi volume sampah hingga 70%. Bagaimana caranya?</div>
+        <div class="article-meta">
+          <span class="read-time">5 menit</span>
+          <span>🌱 Lingkungan</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-card" onclick="openArticle('kompos-manfaat')">
+      <div class="article-thumb thumb-amber">🌻</div>
+      <div class="article-body">
+        <div class="article-cat">Edukasi</div>
+        <div class="article-title">Manfaat Kompos bagi Taman dan Kebun Sekolah</div>
+        <div class="article-excerpt">Pupuk kompos buatan sendiri jauh lebih kaya nutrisi dan ramah lingkungan dibandingkan pupuk kimia.</div>
+        <div class="article-meta">
+          <span class="read-time">4 menit</span>
+          <span>🌾 Pertanian</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-card" onclick="openArticle('plastik-bahaya')">
+      <div class="article-thumb thumb-blue">🌊</div>
+      <div class="article-body">
+        <div class="article-cat">Lingkungan</div>
+        <div class="article-title">Bahaya Plastik Sekali Pakai bagi Laut dan Kita</div>
+        <div class="article-excerpt">Setiap tahun 8 juta ton plastik mencemari lautan. Apa yang bisa kita lakukan dari sekolah?</div>
+        <div class="article-meta">
+          <span class="read-time">6 menit</span>
+          <span>🐠 Kelautan</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-card" onclick="openArticle('bank-sampah-sukses')">
+      <div class="article-thumb thumb-red">🏆</div>
+      <div class="article-body">
+        <div class="article-cat">Inspirasi</div>
+        <div class="article-title">Kisah Sukses Bank Sampah Sekolah di Indonesia</div>
+        <div class="article-excerpt">Beberapa sekolah di Jogja dan Surabaya berhasil meraih pendapatan jutaan rupiah dari bank sampah mereka.</div>
+        <div class="article-meta">
+          <span class="read-time">7 menit</span>
+          <span>💚 Inspirasi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL ARTIKEL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <div></div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-size:2rem;margin-bottom:0.5rem;">♻️</div>
+  <div>Dibuat dengan 💚 untuk <strong>Sekolah Hijau Indonesia</strong></div>
+  <div style="margin-top:0.4rem;font-size:0.8rem;opacity:0.6;">EcoSky — Pendidikan Lingkungan untuk Generasi Penerus</div>
+</footer>
+
+<script>
+// ---- WASTE DATA ----
+const wasteData = {
+  organik: {
+    title: "🍌 Sampah Organik — Cara Pengelolaan",
+    steps: [
+      "Pisahkan dari sampah lain segera setelah dihasilkan (sisa makan siang, buah, sayuran)",
+      "Masukkan ke tempat sampah hijau berlabel 'ORGANIK'",
+      "Kumpulkan di titik kompos sekolah setiap hari",
+      "Olah menjadi kompos dalam 4-6 minggu dengan metode pengomposan",
+      "Gunakan hasil kompos untuk memupuk taman dan kebun sekolah",
+      "Dampak: 1 kg sampah organik → 0,5 kg pupuk kompos berkualitas"
+    ]
+  },
+  kertas: {
+    title: "📄 Kertas & Kardus — Cara Pengelolaan",
+    steps: [
+      "Pisahkan kertas bersih dari kertas kotor/berminyak",
+      "Lipat atau gulung kertas agar hemat tempat",
+      "Kumpulkan di kotak pengumpulan biru berlabel 'KERTAS'",
+      "Pisahkan berdasarkan jenis: HVS, kardus, koran, buku",
+      "Kirim ke bank sampah atau pengepul setiap 2 minggu",
+      "Catatan: 1 ton kertas daur ulang = 17 pohon berhasil diselamatkan"
+    ]
+  },
+  plastik: {
+    title: "🧴 Plastik & Botol — Cara Pengelolaan",
+    steps: [
+      "Bilas botol dan wadah plastik sebelum dibuang",
+      "Penyok/gepengkan botol agar hemat ruang",
+      "Pisahkan berdasarkan kode daur ulang (lihat kode segitiga di bawah produk)",
+      "Simpan di tempat sampah biru atau kuning bertuliskan 'PLASTIK'",
+      "Kumpulkan dan timbang di bank sampah sekolah",
+      "Alternatif: manfaatkan kembali sebagai pot tanaman atau prakarya"
+    ]
+  },
+  elektronik: {
+    title: "🔋 Baterai & Elektronik — Cara Pengelolaan",
+    steps: [
+      "JANGAN buang bersama sampah biasa — sangat berbahaya!",
+      "Kumpulkan baterai bekas di kotak khusus merah berlabel 'B3'",
+      "Simpan dalam wadah tertutup agar tidak bocor",
+      "Catat jenis dan jumlah agar bisa dilaporkan",
+      "Serahkan ke pengumpul limbah B3 resmi atau program take-back pabrikan",
+      "Baterai mengandung merkuri, timbal, dan kadmium yang sangat beracun"
+    ]
+  },
+  logam: {
+    title: "🥫 Kaleng & Logam — Cara Pengelolaan",
+    steps: [
+      "Bilas kaleng bekas minuman atau makanan hingga bersih",
+      "Gepengkan kaleng agar lebih hemat ruang penyimpanan",
+      "Kumpulkan di wadah khusus atau ember berlabel 'LOGAM'",
+      "Pisahkan logam besi, aluminium, dan tembaga jika memungkinkan",
+      "Jual ke pengepul — harga aluminium cukup tinggi",
+      "1 kg kaleng aluminium daur ulang menghemat energi setara 5 jam nonton TV"
+    ]
+  },
+  kaca: {
+    title: "🍶 Kaca & Botol Kaca — Cara Pengelolaan",
+    steps: [
+      "Hati-hati saat menangani — gunakan sarung tangan jika ada pecahan",
+      "Bilas botol kaca sebelum dikumpulkan",
+      "Simpan secara vertikal di kotak khusus agar tidak pecah",
+      "Tandai dengan label 'KACA — HATI-HATI'",
+      "Serahkan ke pengepul atau fasilitas daur ulang kaca",
+      "Kaca bisa didaur ulang 100% tanpa batas dan tidak kehilangan kualitas"
+    ]
+  }
+};
+
+function showWaste(type) {
+  const data = wasteData[type];
+  document.getElementById('detail-title').textContent = data.title;
+  const stepsEl = document.getElementById('detail-steps');
+  stepsEl.innerHTML = data.steps.map((s, i) =>
+    `<li><span class="step-num">${i+1}</span><span class="step-text">${s}</span></li>`
+  ).join('');
+  const detail = document.getElementById('waste-detail');
+  detail.classList.add('show');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ---- TABS ----
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ---- GAME ----
+const gameItems = [
+  { emoji: '🍌', name: 'Kulit Pisang', answer: 'organik', fact: 'Kulit pisang adalah sampah organik yang bisa jadi kompos!' },
+  { emoji: '🧴', name: 'Botol Shampo Kosong', answer: 'anorganik', fact: 'Botol plastik bisa didaur ulang menjadi produk baru!' },
+  { emoji: '📄', name: 'Kertas Soal Bekas', answer: 'anorganik', fact: 'Kertas bisa didaur ulang hingga 5-7 kali!' },
+  { emoji: '🔋', name: 'Baterai Bekas', answer: 'b3', fact: 'Baterai mengandung logam berat yang berbahaya!' },
+  { emoji: '🥗', name: 'Sisa Sayuran', answer: 'organik', fact: 'Sayuran mudah terurai dan bagus untuk kompos!' },
+  { emoji: '🥤', name: 'Gelas Plastik', answer: 'anorganik', fact: 'Plastik membutuhkan 400 tahun untuk terurai!' },
+  { emoji: '💊', name: 'Obat Kadaluarsa', answer: 'b3', fact: 'Obat kadaluarsa adalah limbah berbahaya khusus!' },
+  { emoji: '🍂', name: 'Daun Kering', answer: 'organik', fact: 'Daun kering bisa jadi lapisan karbon dalam kompos!' },
+  { emoji: '📰', name: 'Koran Bekas', answer: 'anorganik', fact: 'Koran bekas bisa dijual ke pengepul!' },
+  { emoji: '🖊️', name: 'Pulpen Habis Tinta', answer: 'anorganik', fact: 'Beberapa merk pulpen punya program refill!' },
+  { emoji: '🥚', name: 'Cangkang Telur', answer: 'organik', fact: 'Cangkang telur kaya kalsium, bagus untuk tanaman!' },
+  { emoji: '🧪', name: 'Cairan Pembersih Kimia', answer: 'b3', fact: 'Bahan kimia wajib diserahkan ke pengelola khusus!' },
+];
+
+let currentQ = 0, score = 0, streak = 0, shuffled = [];
+
+function startGame() {
+  shuffled = [...gameItems].sort(() => Math.random() - 0.5).slice(0, 10);
+  currentQ = 0; score = 0; streak = 0;
+  document.getElementById('game-result').style.display = 'none';
+  document.getElementById('game-arena').style.display = 'block';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback-msg';
+  updateScores();
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (currentQ >= shuffled.length) { endGame(); return; }
+  const item = shuffled[currentQ];
+  document.getElementById('trash-emoji').textContent = item.emoji;
+  document.getElementById('trash-emoji').style.animation = 'none';
+  setTimeout(() => document.getElementById('trash-emoji').style.animation = '', 10);
+  document.getElementById('trash-name').textContent = item.name;
+  document.getElementById('progress-fill').style.width = (currentQ / shuffled.length * 100) + '%';
+  document.getElementById('q-val').textContent = currentQ + 1;
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback-msg';
+  document.querySelectorAll('.bin-btn').forEach(b => b.disabled = false);
+}
+
+function checkAnswer(choice) {
+  const item = shuffled[currentQ];
+  document.querySelectorAll('.bin-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('feedback');
+  if (choice === item.answer) {
+    score += 10 + streak * 2;
+    streak++;
+    fb.textContent = '✅ Benar! ' + item.fact;
+    fb.className = 'feedback-msg correct';
+  } else {
+    streak = 0;
+    fb.textContent = '❌ Kurang tepat. ' + item.fact;
+    fb.className = 'feedback-msg wrong';
+  }
+  updateScores();
+  setTimeout(() => { currentQ++; renderQuestion(); }, 2000);
+}
+
+function updateScores() {
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('streak-val').textContent = streak;
+}
+
+function endGame() {
+  document.getElementById('game-arena').style.display = 'none';
+  const result = document.getElementById('game-result');
+  result.style.display = 'block';
+  const pct = Math.round(score / (shuffled.length * 12) * 100);
+  let emoji = '🌱', title = 'Terus Belajar!', sub = '';
+  if (score >= 90) { emoji = '🏆'; title = 'Juara Lingkungan!'; }
+  else if (score >= 60) { emoji = '🎉'; title = 'Keren Banget!'; }
+  else if (score >= 30) { emoji = '👍'; title = 'Lumayan Nih!'; }
+  sub = `Kamu meraih ${score} poin dari 10 soal. Terus semangat menjaga lingkungan!`;
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-sub').textContent = sub;
+}
+
+function restartGame() { startGame(); }
+
+startGame();
+
+// ---- ARTICLES ----
+const articles = {
+  'zero-waste': {
+    cat: 'Gaya Hidup',
+    title: 'Zero Waste di Sekolah: Mungkinkah?',
+    emoji: '🌿',
+    body: `
+      <p>Program <em>zero waste</em> atau nol sampah di sekolah mungkin terdengar mustahil, tapi banyak sekolah di Indonesia sudah membuktikannya. Dengan sistem yang tepat dan partisipasi seluruh warga sekolah, volume sampah bisa berkurang drastis.</p>
+      <div class="modal-tip">💡 Fakta: Sekolah rata-rata menghasilkan 30–50 kg sampah per hari. Dengan program zero waste, jumlah ini bisa turun hingga 70%!</div>
+      <h4>Apa itu Zero Waste di Sekolah?</h4>
+      <p>Zero waste bukan berarti tidak ada sampah sama sekali, melainkan meminimalkan sampah yang berakhir di TPA (Tempat Pembuangan Akhir). Caranya dengan menerapkan prinsip 5R: <strong>Refuse, Reduce, Reuse, Recycle, Rot</strong>.</p>
+      <h4>Langkah Awal yang Bisa Dilakukan</h4>
+      <ul>
+        <li>Larang penggunaan kemasan plastik sekali pakai di kantin sekolah</li>
+        <li>Wajibkan siswa membawa tempat makan dan botol minum sendiri</li>
+        <li>Pasang tempat sampah terpilah di setiap sudut sekolah</li>
+        <li>Buat program komposting untuk sisa makanan dari kantin</li>
+        <li>Dorong penggunaan kertas dua sisi sebelum didaur ulang</li>
+        <li>Adakan audit sampah bulanan untuk memantau kemajuan</li>
+      </ul>
+      <h4>Manfaat yang Didapat Sekolah</h4>
+      <p>Selain lingkungan yang bersih, sekolah bisa menghemat biaya pengelolaan sampah, mendapat penghasilan dari bank sampah, dan yang terpenting — menanamkan nilai lingkungan pada siswa sejak dini.</p>
+    `
+  },
+  'kompos-manfaat': {
+    cat: 'Edukasi',
+    title: 'Manfaat Kompos bagi Taman dan Kebun Sekolah',
+    emoji: '🌻',
+    body: `
+      <p>Kompos adalah pupuk organik yang dihasilkan dari penguraian bahan-bahan alami seperti sisa makanan, daun, dan ranting. Dibanding pupuk kimia, kompos jauh lebih ramah lingkungan dan bahkan lebih kaya manfaat untuk tanah.</p>
+      <div class="modal-tip">🌱 Tahukah kamu? 1 kg sampah dapur bisa menghasilkan sekitar 0,4 kg kompos berkualitas tinggi dalam 4-6 minggu!</div>
+      <h4>Mengapa Kompos Lebih Baik dari Pupuk Kimia?</h4>
+      <ul>
+        <li>Memperbaiki struktur tanah agar lebih gembur dan subur</li>
+        <li>Meningkatkan kemampuan tanah menyerap dan menyimpan air</li>
+        <li>Mengandung mikroorganisme baik yang membantu pertumbuhan tanaman</li>
+        <li>Tidak mencemari air tanah seperti pupuk kimia berlebih</li>
+        <li>Gratis! Dibuat dari sampah yang sudah ada di sekolah</li>
+      </ul>
+      <h4>Cara Membuat Kompos Sederhana di Sekolah</h4>
+      <p>Metode paling sederhana adalah <strong>metode tumpuk (windrow)</strong>. Kumpulkan sampah organik dalam lapisan bergantian: lapisan hijau (sisa makanan, daun hijau) dan lapisan coklat (daun kering, kertas). Sirami secukupnya dan aduk setiap 3 hari. Kompos siap saat berwarna gelap dan berbau tanah segar.</p>
+      <h4>Apa yang Bisa dan Tidak Bisa Dikomposter?</h4>
+      <p>Bisa: sisa sayuran, buah, nasi, roti, teh, kopi, daun, rumput. Tidak bisa: daging, ikan, produk susu, minyak, tulang, dan bahan plastik/logam.</p>
+    `
+  },
+  'plastik-bahaya': {
+    cat: 'Lingkungan',
+    title: 'Bahaya Plastik Sekali Pakai bagi Laut dan Kita',
+    emoji: '🌊',
+    body: `
+      <p>Plastik sekali pakai — seperti sedotan, kantong kresek, dan gelas plastik — adalah salah satu ancaman terbesar bagi ekosistem laut dunia. Ironisnya, sebagian besar plastik ini lahir dari kebiasaan sehari-hari yang bisa kita ubah.</p>
+      <div class="modal-tip">⚠️ Setiap menit, setara dengan satu truk sampah plastik dibuang ke laut. Indonesia adalah penghasil sampah plastik laut terbesar kedua di dunia.</div>
+      <h4>Mengapa Plastik Sangat Berbahaya?</h4>
+      <ul>
+        <li>Plastik tidak terurai secara biologis — ia hanya pecah menjadi <em>mikroplastik</em></li>
+        <li>Ikan dan hewan laut memakan mikroplastik, lalu kita memakannya</li>
+        <li>Mikroplastik sudah ditemukan di dalam darah manusia</li>
+        <li>Plastik membutuhkan 400-500 tahun untuk benar-benar hancur</li>
+        <li>Zat kimia dalam plastik bisa mengganggu hormon manusia</li>
+      </ul>
+      <h4>Apa yang Bisa Dilakukan Siswa?</h4>
+      <ul>
+        <li>Bawa botol minum sendiri ke sekolah — kurangi gelas plastik</li>
+        <li>Gunakan kotak makan reusable daripada bungkus plastik</li>
+        <li>Tolak sedotan plastik, gunakan sedotan bambu atau logam</li>
+        <li>Ikut aksi bersih-bersih sampah di lingkungan sekolah</li>
+        <li>Edukasi teman dan keluarga tentang bahaya plastik</li>
+      </ul>
+      <h4>Alternatif Ramah Lingkungan</h4>
+      <p>Banyak alternatif sudah tersedia: kantong kain, wadah stainless, beeswax wrap, dan kemasan biodegradable. Investasi kecil ini berdampak besar bagi planet kita.</p>
+    `
+  },
+  'bank-sampah-sukses': {
+    cat: 'Inspirasi',
+    title: 'Kisah Sukses Bank Sampah Sekolah di Indonesia',
+    emoji: '🏆',
+    body: `
+      <p>Di berbagai penjuru Indonesia, bank sampah sekolah telah membuktikan bahwa pengelolaan sampah bukan hanya soal lingkungan — tapi juga bisa menghasilkan uang nyata dan membangun karakter siswa.</p>
+      <div class="modal-tip">💰 Sebuah SD di Surabaya berhasil mengumpulkan Rp 15 juta per tahun dari bank sampah sekolah mereka. Dana ini digunakan untuk beasiswa siswa kurang mampu!</div>
+      <h4>SDN Giwangan, Yogyakarta</h4>
+      <p>Sekolah ini memulai bank sampah pada 2016 dengan modal nol. Siswa mengumpulkan sampah anorganik dari rumah dan sekolah setiap Jumat. Dalam setahun, mereka bisa menjual rata-rata 500 kg sampah per bulan ke pengepul.</p>
+      <h4>SMP Negeri 5 Malang</h4>
+      <p>Program "Eco-School" mereka tidak hanya mencakup bank sampah, tapi juga komposting dan kebun sekolah. Pupuk kompos digunakan untuk kebun sayuran yang hasilnya diolah di kantin sekolah!</p>
+      <h4>Kunci Sukses Bank Sampah Sekolah</h4>
+      <ul>
+        <li>Dukungan penuh dari kepala sekolah dan guru</li>
+        <li>Siswa dilibatkan aktif sebagai "teller" dan pengelola</li>
+        <li>Sistem poin yang menarik dan transparan</li>
+        <li>Kerjasama dengan pengepul yang terpercaya</li>
+        <li>Pelaporan rutin agar siswa melihat dampak nyata</li>
+        <li>Sosialisasi ke orang tua agar sampah dari rumah ikut terkumpul</li>
+      </ul>
+      <p>Kisah-kisah ini membuktikan bahwa perubahan besar dimulai dari langkah kecil di sekolah. Kamu pun bisa memulainya!</p>
+    `
+  }
+};
+
+function openArticle(id) {
+  const art = articles[id];
+  document.getElementById('modal-body').innerHTML = `
+    <p class="modal-cat">${art.cat}</p>
+    <h2>${art.emoji} ${art.title}</h2>
+    ${art.body}
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+</body>
+</html>
